@@ -1,4 +1,4 @@
-const {app, BrowserWindow} = require("electron") // importa as funcionalidades do electron
+const {app, BrowserWindow, ipcMain} = require("electron") // importa as funcionalidades do electron
 const path = require("node:path") // importa o path do node.js
 
 // Função para criar a janela do aplicativo
@@ -16,6 +16,9 @@ function createWindow(){
 
 // Evento que é disparado quando o aplicativo está pronto
 app.whenReady().then(() => {
+    ipcMain.handle("ping", () => "pong, pong") // cria um manipulador para o evento "ping" que retorna "pong, pong"
+    ipcMain.handle("username", () => "Sujeito Programador") // cria um manipulador para o evento "username" que retorna "Sujeito Programador"
+
     // Cria a janela do aplicativo
     if(BrowserWindow.getAllWindows().length === 0){
         createWindow();
