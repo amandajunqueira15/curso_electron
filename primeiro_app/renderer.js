@@ -10,8 +10,10 @@ window.addEventListener("DOMContentLoaded", () => {
     const text = document.getElementById("text") // seleciona o elemento strong pelo id
 
     button.addEventListener("click", async () => {
-        const username = await window.api.getName(); // chama a função getName exposta no preload.js e aguarda a resposta
+       //const username = await window.api.getName(); // chama a função getName exposta no preload.js e aguarda a resposta
+        const username = await window.api.getName("Amanda Junqueira"); // chama a função getName exposta no preload.js e aguarda a resposta
         //console.log(username) // imprime o nome de usuário no console
         text.textContent = username // atualiza o conteúdo do elemento strong com o nome de usuário
+        
     })
 })
