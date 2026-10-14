@@ -1,0 +1,38 @@
+const {app, BrowserWindow} = require("electron") // importa as funcionalidades do electron
+const path = require("node:path") // importa o path do node.js
+
+// Função para criar a janela do aplicativo
+function createWindow(){
+    const win = new BrowserWindow({
+        width: 800, // largura da janela
+        height: 800, // altura da janela
+        webPreferences: {
+            preload: path.join(__dirname, "preload.js") // caminho para o arquivo preload.js
+        }
+    })
+
+    win.loadFile("index.html") // carrega o arquivo index.html na janela
+}
+
+// Evento que é disparado quando o aplicativo está pronto
+app.whenReady().then(() => {
+    // Cria a janela do aplicativo
+    if(BrowserWindow.getAllWindows().length === 0){
+        createWindow();
+    }
+
+    // Evento que é disparado quando o aplicativo é ativado (por exemplo, quando o usuário clica no ícone do aplicativo)
+    app.on("activate", () => {
+        // Cria a janela do aplicativo se não houver nenhuma janela aberta
+        if(BrowserWindow.getAllWindows().length === 0){
+            createWindow();
+        }
+    })
+})
+
+// Evento que é disparado quando todas as janelas do aplicativo são fechadas
+app.on("window-all-closed", () => {
+    if(process.platform !== "darwin"){
+        app.quit(); // fecha o aplicativo se todas as janelas estiverem fechadas, exceto no macOS
+    }
+})
