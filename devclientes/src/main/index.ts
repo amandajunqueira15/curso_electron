@@ -1,21 +1,52 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
-import { join } from 'path'
+import path, { join } from 'node:path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
+import fs from 'fs'
+import { createFileRoute, createURLRoute} from 'electron-router-dom'
+
 
 function createWindow(): void {
-  // Create the browser window.
+
+  // Caminho inteligente que funciona tanto no dev quanto em produção
+  const iconPath = is.dev
+    ? path.join(app.getAppPath(), 'resources', 'icon.png')
+    : path.join(__dirname, '../../resources/icon.png') // ou process.resourcesPath dependendo do empacotamento
+  
+    // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
     show: true,
     autoHideMenuBar: true,
-    ...(process.platform === 'linux' ? { icon } : {}),
+    // ...(process.platform === 'linux' ? { 
+    //   icon: path.join(__dirname, "../build/icon.png")
+    //  } : process.platform === "win32" && {
+    //   icon: path.join(__dirname, "resources", "icon.png")
+    //  }),
+    icon: iconPath,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
     }
   })
+
+  // mudar o ícone para o macOS
+  // if(process.platform === "darwin"){
+  //   const iconPath = path.resolve(__dirname, "resources", "icon.png")
+  //   app.dock.setIcon(iconPath);
+  // }
+
+  // mudar o ícone para o macOS de forma segura
+if (process.platform === 'darwin') {
+  const iconFilename = 'icon.png' // ou o nome do seu arquivo de ícone
+  const iconPath = is.dev
+    ? path.join(app.getAppPath(), 'resources', iconFilename)
+    : path.join(process.resourcesPath, iconFilename) // Em produção no Mac, o electron-vite costuma colocar na resourcesPath
+
+  if (fs.existsSync(iconPath)) {
+    (app as any).dock.setIcon(iconPath)
+  }
+}
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
@@ -26,12 +57,19 @@ function createWindow(): void {
     return { action: 'deny' }
   })
 
+  const devServerURL = createURLRoute(process.env['ELECTRON_RENDERER_URL']!, 'main')
+
+  const fileRoute = createFileRoute(
+    join(__dirname, '../renderer/index.html'),
+    'main'
+  )
+
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+    mainWindow.loadURL(devServerURL)
   } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
+    mainWindow.loadFile(...fileRoute)
   }
 }
 
