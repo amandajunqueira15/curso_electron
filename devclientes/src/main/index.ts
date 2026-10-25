@@ -3,7 +3,7 @@ import path, { join } from 'node:path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import fs from 'fs'
 import { createFileRoute, createURLRoute} from 'electron-router-dom'
-
+import {createTray} from './tray'
 
 function createWindow(): void {
 
@@ -36,6 +36,9 @@ function createWindow(): void {
   //   const iconPath = path.resolve(__dirname, "resources", "icon.png")
   //   app.dock.setIcon(iconPath);
   // }
+
+  // Chamar para exibir o tray no menu de contexto
+  createTray(mainWindow)
 
   // mudar o ícone para o macOS de forma segura
 if (process.platform === 'darwin') {
