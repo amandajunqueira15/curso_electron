@@ -5,6 +5,8 @@ import fs from 'fs'
 import { createFileRoute, createURLRoute} from 'electron-router-dom'
 import {createTray} from './tray'
 
+import './ipc'
+
 function createWindow(): void {
 
   // Caminho inteligente que funciona tanto no dev quanto em produção
