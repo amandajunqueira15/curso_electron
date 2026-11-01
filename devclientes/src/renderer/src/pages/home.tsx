@@ -7,7 +7,7 @@ export function Home(){
     // Buscar clientes
     const {data} = useQuery({queryKey: ["customers"], queryFn: async () => {
         const response = await window.api.fetchAllCustomers();
-        console.log(response)
+        // console.log(response)
         return response
     }})
 

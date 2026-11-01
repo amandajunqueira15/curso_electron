@@ -1,11 +1,45 @@
+import { useQueryClient, useMutation } from "@tanstack/react-query"
 import { FormEvent, useRef } from "react"
+import {useNavigate} from 'react-router-dom'
+
+interface DataMutation{
+    name: string;
+    address: string;
+    email: string;
+    role: string;
+    phone: string;
+}
 
 export function Create(){
+    const navigate = useNavigate()
+    const queryClient = useQueryClient()
     const nameRef = useRef<HTMLInputElement | null>(null)
     const addressRef = useRef<HTMLInputElement | null>(null)
     const emailRef = useRef<HTMLInputElement | null>(null)
     const roleRef = useRef<HTMLInputElement | null>(null)
     const phoneRef = useRef<HTMLInputElement | null>(null)
+
+    const {isPending, mutateAsync: createCustomer} = useMutation({mutationFn: async (data: DataMutation) => {
+        const response = await window.api.addCustomer({
+            name: data.name,
+            address: data.address,
+            email: data.email,
+            role: data.role,
+            phone: data.phone,
+            status: true
+
+        }).then((response) => {
+            console.log("Deu certo e cadastrou")
+            navigate('/')
+        }).catch((err) => {
+            console.log("Erro ao cadastrar", err)
+        })
+
+    },
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["customers"]})
+        }
+    })
 
     async function handleAddCustomer(e: FormEvent){
         e.preventDefault()
@@ -20,14 +54,6 @@ export function Create(){
             return;
         }
 
-        console.log({
-            name,
-            address,
-            email,
-            role,
-            phone
-        })
-
         // const doc = {
         //     name: "Amanda Junqueira",
         //     email: "amanda@teste.com",
@@ -36,9 +62,14 @@ export function Create(){
         //     role: "Frontend",
         //     status: true
         // }
-    
-        // const response = await window.api.addCustomer(doc)
-        // console.log(response)
+
+        await createCustomer({
+            name: name,
+            address: address,
+            email: email,
+            role: role,
+            phone: phone
+        })
     }
 
     return(
@@ -71,7 +102,7 @@ export function Create(){
                         <input type="text" placeholder='Digite o telefone do cliente...' className='w-full h-9 rounded text-black px-2' ref={phoneRef} />
                     </div>
 
-                    <button type="submit" className='bg-blue-500 rounded flex items-center justify-center w-full h-9'>Cadastrar</button>
+                    <button type="submit" className='bg-blue-500 rounded flex items-center justify-center w-full h-9 disabled:bg-gray-500' disabled={isPending}>Cadastrar</button>
                 </form>
             </section>
         </div>
