@@ -25,7 +25,7 @@ const api = {
   },
   
   addCustomer: (doc: NewCustomer): Promise<void | PouchDB.Core.Response> => ipcRenderer.invoke("add-customer", doc),
-
+  fetchAllCustomers: (): Promise<Customer[]> => ipcRenderer.invoke('fetch-all-customers')
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

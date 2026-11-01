@@ -3,9 +3,9 @@ import {Link} from 'react-router-dom'
 async function handleAddCustomer(){
 
     const doc = {
-        name: "Matheus Fraga",
-        email: "teste@teste.com",
-        phone: "67999999",
+        name: "Amanda Junqueira",
+        email: "amanda@teste.com",
+        phone: "99999999",
         address: "Rua X, centro",
         role: "Frontend",
         status: true

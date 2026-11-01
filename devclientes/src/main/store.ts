@@ -40,3 +40,18 @@ ipcMain.handle("add-customer", async (event, doc: Customer) => {
     const result = await addCustomer(doc)
     return result
 })
+
+// Função para buscar todos os clientes
+async function fetchAllCustomers(): Promise<Customer[]>{
+    try{
+        const result = await db.allDocs({include_docs: true})
+        return result.rows.map(row => row.doc as Customer)
+    }catch(err){
+        console.log("Erro ao buscar dados ", err)
+        return []
+    }
+}
+
+ipcMain.handle("fetch-all-customers", async () => {
+    return await fetchAllCustomers();
+})

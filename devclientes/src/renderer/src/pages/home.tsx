@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 export function Home(){
 
     async function handleAdd(){
-        const response = await window.api.fetchUsers();
+        const response = await window.api.fetchAllCustomers()
         console.log(response)
     }
 
@@ -14,7 +14,7 @@ export function Home(){
             <Link to="/create">Create</Link>
             <br /><br />
             <button onClick={handleAdd}>
-                Testar
+                Buscar Usuários
             </button>
         </div>
     )
