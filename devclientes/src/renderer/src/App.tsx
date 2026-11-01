@@ -1,9 +1,11 @@
+import { QueryClientProvider } from '@tanstack/react-query'
+import {queryClient} from './lib/react-query'
 import {Routes} from './Routes'
 
 export default function App(){
   return (
-    <div>
+    <QueryClientProvider client={queryClient}>
       <Routes />
-    </div>
+    </QueryClientProvider>
   )
 }
