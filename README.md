@@ -61,3 +61,77 @@
     ```bash
         npm install
     ```
+- Adicionado o comando de recarregamento automático do projeto no script do package.json:
+
+    ```bash
+        "dev": "electron-vite dev --watch",
+    ```
+
+- Instalação tailwind 3 com as dependências para o vite:
+
+    ```bash
+        npm install -D tailwindcss@3 postcss autoprefixer
+    ```
+
+- Instalação das configurações do tailwind 3:
+
+    ```bash
+        npx tailwindcss init -p
+    ```
+
+- Adicionando o tailwind nas diretivas do css dentro de renderer/src/styles/global.css
+
+- Criada pasta styles dentro de renderer e arquivo global.css dentro de styles
+
+- Adicionada configuração no arquivo global.css:
+
+    ```bash
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+    ```
+
+- Instalando vite plugin para ícones:
+
+    ```bash
+        npm install vite-plugin-static-copy
+    ```
+
+- Instalação do electron router dom:
+
+    ```bash
+        npm install electron-router-dom@1.0.5
+    ```
+
+- Instalação do react router dom:
+
+    ```bash
+        npm install react-router-dom
+
+    ```
+
+- Instalação do radix-ui collapsible:
+
+    ```bash
+        npm install @radix-ui/react-collapsible
+    ```
+
+- Instalando ícones:
+    ```bash
+        npm install phosphor-react clsx
+    ```
+
+- Instalando pacotes de banco de dados:
+    ```bash
+        npm install pouchdb pouchdb-browser
+    ```
+
+- Instalando tipagens do typescript para o banco de dados:
+    ```bash
+        npm install @types/pouchdb @types/pouchdb-browser
+    ```
+
+- Instalando tanstack para facilitar desenvolvimento frontend:
+    ```bash
+        npm i @tanstack/react-query
+    ```
