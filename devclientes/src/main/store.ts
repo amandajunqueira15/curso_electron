@@ -55,3 +55,17 @@ async function fetchAllCustomers(): Promise<Customer[]>{
 ipcMain.handle("fetch-all-customers", async () => {
     return await fetchAllCustomers();
 })
+
+// Função para buscar cliente pelo ID
+async function fetchCustomerById(docId: string){
+    return db.get(docId).then(doc => doc).catch(err => {
+        console.log("Erro ao buscar pelo ID", err)
+        return null
+    })
+}
+
+ipcMain.handle('fetch-customer-id', async (event, docId) => {
+    const result = await fetchCustomerById(docId)
+
+    return result
+})
