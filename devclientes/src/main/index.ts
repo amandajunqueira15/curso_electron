@@ -4,6 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import fs from 'fs'
 import { createFileRoute, createURLRoute} from 'electron-router-dom'
 import {createTray} from './tray'
+import {createShortcuts} from './shortcuts'
 
 import './ipc'
 import './store'
@@ -42,6 +43,8 @@ function createWindow(): void {
 
   // Chamar para exibir o tray no menu de contexto
   createTray(mainWindow)
+
+  createShortcuts(mainWindow)
 
   // mudar o ícone para o macOS de forma segura
 if (process.platform === 'darwin') {
